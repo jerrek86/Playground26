@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Owner Scorecard | Alspaugh Wealth Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --charcoal:  #1e2022;
+  --char-dark: #111314;
+  --blue:      #29abe2;
+  --blue-dk:   #1a8fc4;
+  --blue-pale: #e8f6fd;
+  --white:     #ffffff;
+  --off-white: #f4f6f8;
+  --border:    #e0e4e8;
+  --text:      #1e2022;
+  --muted:     #6c7a8a;
+  --red:       #e53935;
+  --amber:     #f59e0b;
+  --green:     #16a34a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh}
+.site-header{background:var(--char-dark);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:76px;border-bottom:3px solid var(--blue)}
+.brand-logo{height:48px;width:auto;display:block}
+.hdr-right{text-align:right;font-size:12px;color:rgba(255,255,255,0.4)}
+.hdr-right strong{color:rgba(255,255,255,0.85);display:block;font-size:14px;font-weight:700;font-family:'Montserrat',sans-serif}
+.hdr-right a{color:var(--blue);text-decoration:none;font-weight:600;font-size:13px}
+.prog-wrap{background:var(--charcoal);padding:10px 40px 13px;display:none;border-bottom:1px solid rgba(255,255,255,0.05)}
+.prog-wrap.show{display:block}
+.prog-track{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .5s ease;width:0}
+.prog-steps{display:flex;justify-content:space-between;margin-top:9px}
+.ps{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.2);transition:color .3s;font-family:'Montserrat',sans-serif}
+.ps.active{color:var(--blue)}
+.screen{display:none}
+.screen.active{display:block}
+.hero{background:var(--char-dark);min-height:calc(100vh - 79px);display:flex;align-items:center;justify-content:center;padding:80px 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 60px,rgba(41,171,226,0.03) 60px,rgba(41,171,226,0.03) 61px);pointer-events:none}
+.hero::after{content:'';position:absolute;top:-140px;right:-140px;width:600px;height:600px;background:radial-gradient(circle,rgba(41,171,226,0.11) 0%,transparent 65%);pointer-events:none}
+.hero-glow{position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(41,171,226,0.06) 0%,transparent 65%);pointer-events:none}
+.hero-inner{position:relative;z-index:2;max-width:700px;text-align:center;animation:fadeUp .65s ease both}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(41,171,226,0.1);border:1px solid rgba(41,171,226,0.3);color:var(--blue);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:7px 18px;border-radius:2px;margin-bottom:28px;font-family:'Montserrat',sans-serif}
+.hero-title{font-family:'Montserrat',sans-serif;font-size:clamp(30px,5vw,54px);font-weight:800;color:var(--white);line-height:1.1;margin-bottom:22px;letter-spacing:-.5px}
+.hero-title .accent{color:var(--blue)}
+.hero-body{font-size:17px;color:rgba(255,255,255,0.52);line-height:1.8;margin-bottom:44px;font-weight:300;max-width:540px;margin-left:auto;margin-right:auto}
+.hero-body strong{color:rgba(255,255,255,0.9);font-weight:600}
+.btn-hero{background:var(--blue);color:var(--white);border:none;padding:18px 52px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all .25s;display:inline-flex;align-items:center;gap:10px}
+.btn-hero:hover{background:var(--blue-dk);transform:translateY(-2px);box-shadow:0 12px 30px rgba(41,171,226,0.4)}
+.hero-trust{margin-top:28px;display:flex;align-items:center;justify-content:center;gap:28px;flex-wrap:wrap}
+.trust-item{font-size:12px;color:rgba(255,255,255,0.3);display:flex;align-items:center;gap:6px}
+.trust-item::before{content:'✓';color:var(--blue);font-size:12px;font-weight:700}
+.form-wrap{max-width:600px;margin:0 auto;padding:52px 24px 80px}
+.step{display:none}
+.step.active{display:block;animation:fadeUp .35s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.q-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;font-family:'Montserrat',sans-serif}
+.q-ttl{font-family:'Montserrat',sans-serif;font-size:26px;font-weight:800;color:var(--charcoal);line-height:1.2;margin-bottom:8px}
+.q-sub{font-size:15px;color:var(--muted);margin-bottom:26px;line-height:1.6}
+.opt-grid{display:grid;gap:10px}
+.opt-grid.col2{grid-template-columns:1fr 1fr}
+@media(max-width:480px){.opt-grid.col2{grid-template-columns:1fr}}
+.opt{background:var(--white);border:2px solid var(--border);border-radius:4px;padding:15px 18px;cursor:pointer;transition:all .18s;position:relative}
+.opt:hover{border-color:var(--blue);box-shadow:0 3px 12px rgba(41,171,226,0.12)}
+.opt.picked{border-color:var(--blue);background:rgba(41,171,226,0.04)}
+.opt.picked::after{content:'✓';position:absolute;top:10px;right:13px;width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.opt-lbl{font-size:15px;font-weight:600;color:var(--charcoal);display:block;margin-bottom:2px;font-family:'Montserrat',sans-serif}
+.opt-desc{font-size:12px;color:var(--muted)}
+.field{margin-bottom:16px}
+.f-lbl{font-size:11px;font-weight:700;color:var(--charcoal);display:block;margin-bottom:7px;letter-spacing:.8px;text-transform:uppercase;font-family:'Montserrat',sans-serif}
+.f-lbl span{font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0}
+.f-inp{width:100%;background:var(--white);border:2px solid var(--border);border-radius:4px;padding:12px 14px;font-family:'Open Sans',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color .2s}
+.f-inp:focus{border-color:var(--blue)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:480px){.f-row{grid-template-columns:1fr}}
+.q-nav{margin-top:26px;display:flex;align-items:center;justify-content:space-between}
+.btn-next{background:var(--blue);color:var(--white);border:none;padding:13px 34px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;margin-left:auto}
+.btn-next:hover{background:var(--blue-dk);box-shadow:0 5px 18px rgba(41,171,226,0.3)}
+.btn-back{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600;display:flex;align-items:center;gap:5px;padding:8px 0;transition:color .2s;letter-spacing:.5px}
+.btn-back:hover{color:var(--charcoal)}
+.err{background:#fff5f5;border:1px solid rgba(229,57,53,0.3);color:var(--red);font-size:13px;padding:10px 14px;border-radius:3px;margin-top:10px;display:none}
+.err.show{display:block}
+.calc-screen{background:var(--char-dark);min-height:calc(100vh - 79px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center}
+.calc-ring{width:64px;height:64px;border:3px solid rgba(255,255,255,0.07);border-top-color:var(--blue);border-right-color:rgba(41,171,226,0.35);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto 28px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.calc-ttl{font-family:'Montserrat',sans-serif;font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px}
+.calc-sub{color:rgba(255,255,255,0.38);font-size:14px;margin-bottom:36px}
+.calc-list{text-align:left;max-width:280px}
+.calc-item{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:14px;color:rgba(255,255,255,0.28);opacity:0;transform:translateX(-8px);transition:all .4s;border-bottom:1px solid rgba(255,255,255,0.05)}
+.calc-item:last-child{border:none}
+.calc-item.done{opacity:1;transform:translateX(0);color:rgba(255,255,255,0.78)}
+.calc-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;transition:background .3s}
+.calc-item.done .calc-dot{background:var(--blue)}
+.results-wrap{max-width:780px;margin:0 auto;padding:48px 24px 80px;animation:fadeUp .5s ease both}
+.res-banner{background:var(--char-dark);border-radius:6px;padding:36px 42px;margin-bottom:22px;position:relative;overflow:hidden;border-left:5px solid var(--blue)}
+.res-banner::after{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(41,171,226,0.1) 0%,transparent 65%);pointer-events:none}
+.res-eye{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;font-family:'Montserrat',sans-serif}
+.res-name{font-family:'Montserrat',sans-serif;font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--white);margin-bottom:3px;line-height:1.1}
+.res-biz{font-size:14px;color:rgba(255,255,255,0.38);margin-bottom:26px}
+.val-row{display:flex;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.val-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:6px;font-family:'Montserrat',sans-serif}
+.val-num{font-family:'Montserrat',sans-serif;font-size:clamp(32px,6vw,54px);font-weight:800;color:var(--blue);line-height:1;letter-spacing:-1px}
+.val-range-box{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:12px 18px}
+.vrb-lbl{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-family:'Montserrat',sans-serif}
+.vrb-num{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:rgba(255,255,255,0.75)}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:580px){.score-grid{grid-template-columns:1fr}}
+.sc-card{background:var(--white);border-radius:4px;padding:20px 22px;border:1px solid var(--border);border-top:3px solid var(--border)}
+.sc-card.good{border-top-color:var(--green)}
+.sc-card.warn{border-top-color:var(--amber)}
+.sc-card.bad{border-top-color:var(--red)}
+.sc-card.blue{border-top-color:var(--blue)}
+.sc-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-family:'Montserrat',sans-serif}
+.sc-val{font-family:'Montserrat',sans-serif;font-size:20px;font-weight:700;color:var(--charcoal);margin-bottom:5px}
+.sc-desc{font-size:12px;color:var(--muted);line-height:1.55}
+.sec-hd{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:var(--charcoal);margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--blue-pale);display:flex;align-items:center;gap:10px}
+.insight-list{display:grid;gap:12px;margin-bottom:26px}
+.insight{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:0 4px 4px 0;padding:16px 18px 16px 48px;position:relative;font-size:15px;line-height:1.7;color:var(--text)}
+.i-icon{position:absolute;left:14px;top:15px;font-size:18px}
+.insight strong{color:var(--charcoal);font-weight:700}
+.next-box{background:var(--blue-pale);border:1px solid rgba(41,171,226,0.2);border-radius:6px;padding:30px 34px;margin-bottom:24px}
+.next-ttl{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:var(--charcoal);margin-bottom:8px}
+.next-sub{font-size:15px;color:var(--muted);margin-bottom:22px;line-height:1.65}
+.next-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:540px){.next-grid{grid-template-columns:1fr}}
+.ni{background:var(--white);border:1px solid rgba(41,171,226,0.15);border-radius:4px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.ni-ico{width:32px;height:32px;background:var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ni-txt strong{display:block;font-weight:700;color:var(--charcoal);margin-bottom:2px;font-size:13px;font-family:'Montserrat',sans-serif}
+.ni-txt span{color:var(--muted);font-size:12px}
+.cta-box{background:var(--char-dark);border-radius:6px;padding:44px 48px;text-align:center;position:relative;overflow:hidden;border-top:4px solid var(--blue)}
+.cta-box::before{content:'';position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(ellipse,rgba(41,171,226,0.1) 0%,transparent 65%);pointer-events:none}
+.cta-eye{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;font-family:'Montserrat',sans-serif}
+.cta-ttl{font-family:'Montserrat',sans-serif;font-size:clamp(22px,3.5vw,30px);font-weight:800;color:var(--white);margin-bottom:14px;line-height:1.2;letter-spacing:-.3px}
+.cta-ttl .accent{color:var(--blue)}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.48);max-width:460px;margin:0 auto 28px;line-height:1.7;font-weight:300}
+.cta-feats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.cta-feat{font-size:12px;color:rgba(255,255,255,0.48);display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:.5px}
+.cta-feat::before{content:'●';font-size:5px;color:var(--blue)}
+.btn-cta{background:var(--blue);color:var(--white);border:none;padding:18px 52px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.btn-cta:hover{background:var(--blue-dk);transform:translateY(-2px);box-shadow:0 10px 28px rgba(41,171,226,0.35)}
+.cta-note{margin-top:16px;font-size:12px;color:rgba(255,255,255,0.2)}
+.cta-note strong{color:rgba(255,255,255,0.42)}
+.cta-sig{margin-top:10px;font-size:12px;color:rgba(255,255,255,0.22)}
+.cta-sig a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCAHTBVoDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAcIBgkDBAUCAf/EAGUQAAEDAgMDBQYODAgNAwQCAwEAAgMEBQYHERIhMQgTQVFhCSJxdIGzFBUjMjU3OEJSdZGhsrQWFxg2VmJyc4KSlbEzV3aElMHR0iQ0Q0dTVIOFk6KlxNNVY8NGo8LwJeEmRPH/xAAbAQEAAgMBAQAAAAAAAAAAAAAABQYDBAcCAf/EAD4RAQABAwICBggFAwMEAgMAAAABAgMEBREhMQYSQVFhcROBkaGxwdHhFCIyNPA1cvEVIzNCUmKCssIWU3P/2gAMAwEAAhEDEQA/AKZIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIs+5P2X0+Zmaloww1r/QTn+iLjI3/ACdKzQyHXoJ3MB+E9q9vlWZajLPNuut1FAY7LcB6Oteg71sTydYx+Q7abpx02SeKCJkREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERZ9yfsvp8zM1LRhhrX+gnP9EXGRv+TpWaGQ69BO5gPwntQXI5A+W32LZayYyuNPsXTEmzJDtDvo6NuvNjs2zq/tBZ1LIOWplt9nuUVRX0NPzl6w/tV1JsjV0kQHq0Y8LRtAdLmNHSptpKeCkpYaSlhZDBCxscUbBo1jQNAAOgADRcpAI0I1BQaZ0Utcq/Lc5bZvXChpIObs1y1rrZoO9bG8najH5DtpunVsnpUSoCIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgLYJyBMuW4Zy0lxnXwbNzxGQ6EuboY6RhIYB1bZ2n9o2OpU1yHwDU5lZo2jCsQeKaaXna6Vv+Spmb5Ha9BI70fjOatrFBSU1BQwUNHCyCmp4mxQxMGjWMaNGtA6gAAuZAREQEREBERAUDctzLb7OspJrvQU/OXnDm3W0+yNXSQaerx/qgPA4kxgdKnleXiu/WPDOH6y94juFNb7XTRl1RPUHRgHDTTi4ngGjUkkAAkoNPaL28dyYfmxneJsKMqY7FJWSPoGVDQ2RkJcS1pAJ4DcN/ADXevEQFmWW2X91xjV840OpLZG7Sarc3cfxWD3zvmHT0A5JlVlRU3oxXfEcclNbTo6Kn3tkqB1npa35z0acVYGkp6aho46alhip6aFmyxjAGtY0dAHQrBpujVXtrl/hT3ds/ZUta6SU4+9nGnevtnsj6z7odDC+H7Vhq1Mt1ppmwwt3vcd75HfCcekqJM5M0nF02HsMVOjd7KqtjPHoLIz+9w8nWupnHmj6YCfD2G5iKTUsqqth/hh0sYfg9Z6fBxh1ZdT1Wmmn8PjcIjnMfCGDRNBqrq/F5vGqeMRPxn6CIirS6CIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgLYJyBMuW4Zy0lxnXwbNzxGQ6EuboY6RhIYB1bZ2n9o2OpU1yHwDU5lZo2jCsQeKaaXna6Vv+Spmb5Ha9BI70fjOatrFBSU1BQwUNHCyCmp4mxQxMGjWMaNGtA6gAA" class="brand-logo" alt="Alspaugh Wealth Management">
+  <div class="hdr-right">
+    <strong>Brock Alspaugh</strong>
+    <a href="tel:5733327855">(573) 332-7855</a>
+  </div>
+</header>
+<div class="prog-wrap" id="progWrap">
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-steps">
+    <span class="ps" id="ps1">Industry</span>
+    <span class="ps" id="ps2">Revenue</span>
+    <span class="ps" id="ps3">Profitability</span>
+    <span class="ps" id="ps4">Timeline</span>
+    <span class="ps" id="ps5">Contact</span>
+  </div>
+</div>
+<div class="screen active" id="screen-hero">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <div class="hero-pill">Free &middot; 60 Seconds &middot; Instant Results</div>
+      <h1 class="hero-title">Find Out What Your Business<br>Is <span class="accent">Actually Worth</span></h1>
+      <p class="hero-body">Most business owners have <strong>no idea what their business would sell for today</strong> &mdash; or what&rsquo;s quietly eroding that number. Answer 5 quick questions and get your personalized Business Owner Scorecard.</p>
+      <button class="btn-hero" id="startBtn">Get My Free Scorecard &rarr;</button>
+      <div class="hero-trust">
+        <span class="trust-item">No financials required</span>
+        <span class="trust-item">Under 60 seconds</span>
+        <span class="trust-item">Instant personalized results</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="screen" id="screen-form">
+  <div class="form-wrap">
+    <div class="step active" id="step-1">
+      <div class="q-num">Question 1 of 5</div>
+      <h2 class="q-ttl">What kind of business do you run?</h2>
+      <p class="q-sub">This lets us apply the right industry benchmarks to your valuation estimate.</p>
+      <div class="opt-grid">
+        <div class="opt" data-field="industry" data-value="services" onclick="pick(this)"><span class="opt-lbl">Professional Services</span><span class="opt-desc">Consulting, marketing, accounting, law, finance</span></div>
+        <div class="opt" data-field="industry" data-value="medical" onclick="pick(this)"><span class="opt-lbl">Medical / Dental / Healthcare</span><span class="opt-desc">Practices, clinics, therapy, veterinary</span></div>
+        <div class="opt" data-field="industry" data-value="construction" onclick="pick(this)"><span class="opt-lbl">Construction / Trades</span><span class="opt-desc">Contractors, HVAC, plumbing, electrical, landscaping</span></div>
+        <div class="opt" data-field="industry" data-value="retail" onclick="pick(this)"><span class="opt-lbl">Retail / Food &amp; Beverage</span><span class="opt-desc">Stores, restaurants, e-commerce</span></div>
+        <div class="opt" data-field="industry" data-value="manufacturing" onclick="pick(this)"><span class="opt-lbl">Manufacturing / Distribution</span><span class="opt-desc">Production, wholesale, logistics</span></div>
+        <div class="opt" data-field="industry" data-value="other" onclick="pick(this)"><span class="opt-lbl">Other</span><span class="opt-desc">Real estate, tech, media, or another sector</span></div>
+      </div>
+      <div class="err" id="err-1">Please select your industry to continue.</div>
+      <div class="q-nav"><button class="btn-next" onclick="goNext(1)">Continue &rarr;</button></div>
+    </div>
+    <div class="step" id="step-2">
+      <div class="q-num">Question 2 of 5</div>
+      <h2 class="q-ttl">What&rsquo;s your approximate annual revenue?</h2>
+      <p class="q-sub">A ballpark is fine &mdash; revenue is the biggest single driver of your valuation estimate.</p>
+      <div class="opt-grid col2">
+        <div class="opt" data-field="revenue" data-value="under500" onclick="pick(this)"><span class="opt-lbl">Under $500K</span></div>
+        <div class="opt" data-field="revenue" data-value="500k-1m" onclick="pick(this)"><span class="opt-lbl">$500K &ndash; $1M</span></div>
+        <div class="opt" data-field="revenue" data-value="1m-2m" onclick="pick(this)"><span class="opt-lbl">$1M &ndash; $2M</span></div>
+        <div class="opt" data-field="revenue" data-value="2m-5m" onclick="pick(this)"><span class="opt-lbl">$2M &ndash; $5M</span></div>
+        <div class="opt" data-field="revenue" data-value="5m-10m" onclick="pick(this)"><span class="opt-lbl">$5M &ndash; $10M</span></div>
+        <div class="opt" data-field="revenue" data-value="over10m" onclick="pick(this)"><span class="opt-lbl">Over $10M</span></div>
+      </div>
+      <div class="err" id="err-2">Please select a revenue range to continue.</div>
+      <div class="q-nav"><button class="btn-back" onclick="goBack(2)">&larr; Back</button><button class="btn-next" onclick="goNext(2)">Continue &rarr;</button></div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="q-num">Question 3 of 5</div>
+      <h2 class="q-ttl">How would you describe your profitability?</h2>
+      <p class="q-sub">Think about what the business earns after your salary and all expenses &mdash; not counting one-time costs.</p>
+      <div class="opt-grid">
+        <div class="opt" data-field="profit" data-value="high" onclick="pick(this)"><span class="opt-lbl">Strong &mdash; 30%+ profit margin</span><span class="opt-desc">Generates significant income beyond my salary</span></div>
+        <div class="opt" data-field="profit" data-value="mid" onclick="pick(this)"><span class="opt-lbl">Healthy &mdash; 15&ndash;30% profit margin</span><span class="opt-desc">Good profitability with some room to improve</span></div>
+        <div class="opt" data-field="profit" data-value="low" onclick="pick(this)"><span class="opt-lbl">Tight &mdash; Under 15% margin</span><span class="opt-desc">Revenue is solid but margins are thin</span></div>
+        <div class="opt" data-field="profit" data-value="unsure" onclick="pick(this)"><span class="opt-lbl">Honestly not sure</span><span class="opt-desc">I don&rsquo;t track this closely right now</span></div>
+      </div>
+      <div class="err" id="err-3">Please select an option to continue.</div>
+      <div class="q-nav"><button class="btn-back" onclick="goBack(3)">&larr; Back</button><button class="btn-next" onclick="goNext(3)">Continue &rarr;</button></div>
+    </div>
+    <div class="step" id="step-4">
+      <div class="q-num">Question 4 of 5</div>
+      <h2 class="q-ttl">When are you thinking about exiting?</h2>
+      <p class="q-sub">There&rsquo;s no wrong answer &mdash; this helps us understand where you are in the journey.</p>
+      <div class="opt-grid col2">
+        <div class="opt" data-field="timeline" data-value="1-3" onclick="pick(this)"><span class="opt-lbl">1&ndash;3 years</span><span class="opt-desc">Planning soon</span></div>
+        <div class="opt" data-field="timeline" data-value="3-7" onclick="pick(this)"><span class="opt-lbl">3&ndash;7 years</span><span class="opt-desc">Starting to think about it</span></div>
+        <div class="opt" data-field="timeline" data-value="7-15" onclick="pick(this)"><span class="opt-lbl">7&ndash;15 years</span><span class="opt-desc">Long runway ahead</span></div>
+        <div class="opt" data-field="timeline" data-value="notthinking" onclick="pick(this)"><span class="opt-lbl">Not thinking about it yet</span><span class="opt-desc">Just want to know my number</span></div>
+      </div>
+      <div class="err" id="err-4">Please select a timeline to continue.</div>
+      <div class="q-nav"><button class="btn-back" onclick="goBack(4)">&larr; Back</button><button class="btn-next" onclick="goNext(4)">Continue &rarr;</button></div>
+    </div>
+    <div class="step" id="step-5">
+      <div class="q-num">Question 5 of 5</div>
+      <h2 class="q-ttl">Where should we send your Scorecard?</h2>
+      <p class="q-sub">Your results display instantly. We&rsquo;ll also email you a copy to keep.</p>
+      <div class="f-row">
+        <div class="field"><label class="f-lbl" for="f-fn">First Name</label><input class="f-inp" type="text" id="f-fn" placeholder="John" autocomplete="given-name"></div>
+        <div class="field"><label class="f-lbl" for="f-ln">Last Name</label><input class="f-inp" type="text" id="f-ln" placeholder="Smith" autocomplete="family-name"></div>
+      </div>
+      <div class="field"><label class="f-lbl" for="f-em">Email Address</label><input class="f-inp" type="email" id="f-em" placeholder="john@yourcompany.com" autocomplete="email"></div>
+      <div class="field"><label class="f-lbl" for="f-bz">Business Name <span>(optional)</span></label><input class="f-inp" type="text" id="f-bz" placeholder="Your Company LLC"></div>
+      <div class="err" id="err-5">Please enter your first name and a valid email address.</div>
+      <div class="q-nav"><button class="btn-back" onclick="goBack(5)">&larr; Back</button><button class="btn-next" onclick="submitForm()">See My Scorecard &rarr;</button></div>
+    </div>
+  </div>
+</div>
+<div class="screen" id="screen-calc">
+  <div class="calc-screen">
+    <div class="calc-ring"></div>
+    <div class="calc-ttl">Building Your Scorecard&hellip;</div>
+    <div class="calc-sub">Applying industry benchmarks to your answers</div>
+    <div class="calc-list">
+      <div class="calc-item" id="ci1"><div class="calc-dot"></div>Analyzing industry multiples</div>
+      <div class="calc-item" id="ci2"><div class="calc-dot"></div>Estimating valuation range</div>
+      <div class="calc-item" id="ci3"><div class="calc-dot"></div>Scoring exit readiness</div>
+      <div class="calc-item" id="ci4"><div class="calc-dot"></div>Flagging key risk factors</div>
+    </div>
+  </div>
+</div>
+<div class="screen" id="screen-results">
+  <div class="results-wrap">
+    <div class="res-banner">
+      <div class="res-eye">Business Owner Scorecard &mdash; Alspaugh Wealth Management</div>
+      <div class="res-name" id="r-name">&mdash;</div>
+      <div class="res-biz" id="r-biz">&mdash;</div>
+      <div class="val-row">
+        <div><div class="val-lbl">Estimated Business Value</div><div class="val-num" id="r-val">&mdash;</div></div>
+        <div class="val-range-box"><div class="vrb-lbl">Broader range</div><div class="vrb-num" id="r-range">&mdash;</div></div>
+      </div>
+    </div>
+    <div class="score-grid">
+      <div class="sc-card" id="scc-ready"><div class="sc-lbl">Exit Readiness</div><div class="sc-val" id="r-ready">&mdash;</div><div class="sc-desc" id="r-ready-d">&mdash;</div></div>
+      <div class="sc-card" id="scc-risk"><div class="sc-lbl">Value Risk</div><div class="sc-val" id="r-risk">&mdash;</div><div class="sc-desc" id="r-risk-d">&mdash;</div></div>
+      <div class="sc-card blue"><div class="sc-lbl">Industry Multiple</div><div class="sc-val" id="r-mult">&mdash;</div><div class="sc-desc" id="r-mult-d">&mdash;</div></div>
+    </div>
+    <div class="sec-hd">&#128203; What This Means for You</div>
+    <div class="insight-list" id="r-insights"></div>
+    <div class="next-box">
+      <div class="next-ttl">What a full Business Insights Report shows you</div>
+      <div class="next-sub">Your Scorecard uses industry benchmarks. A complete report &mdash; built with professional valuation software using your actual financials &mdash; gives you a certified-quality number and a detailed exit action plan.</div>
+      <div class="next-grid">
+        <div class="ni"><div class="ni-ico">&#128202;</div><div class="ni-txt"><strong>Exact Valuation</strong><span>Three-method analysis using your real numbers</span></div></div>
+        <div class="ni"><div class="ni-ico">&#128737;</div><div class="ni-txt"><strong>Risk Assessment</strong><span>8 risk factors scored and prioritized</span></div></div>
+        <div class="ni"><div class="ni-ico">&#128506;</div><div class="ni-txt"><strong>Exit Roadmap</strong><span>Custom path to maximize your proceeds</span></div></div>
+        <div class="ni"><div class="ni-ico">&#128274;</div><div class="ni-txt"><strong>Equity Protection</strong><span>Buy-sell strategy to protect what you&rsquo;ve built</span></div></div>
+      </div>
+    </div>
+    <div class="cta-box">
+      <div class="cta-eye">Your Next Step</div>
+      <div class="cta-ttl">Get Your <span class="accent">Exact Number</span><br>with a Full Business Report</div>
+      <div class="cta-sub">Takes about 15 minutes. Brock&rsquo;s team personally reviews your results and reaches out to walk you through your plan &mdash; no obligation, no pressure.</div>
+      <div class="cta-feats">
+        <span class="cta-feat">Certified-quality valuation</span>
+        <span class="cta-feat">Full exit readiness score</span>
+        <span class="cta-feat">Personal review with Brock</span>
+      </div>
+      <a href="https://app.risr.com/guest/ecbb3e6e-51ef-4e3d-a480-e3623192a534/client-advisor-invite-entry" class="btn-cta" target="_blank">Get My Full Business Report &rarr;</a>
+      <div class="cta-note">Free &middot; Confidential &middot; <strong>Prepared by Brock Alspaugh, Alspaugh Wealth Management</strong></div>
+      <div class="cta-sig">Questions? Call Brock: <a href="tel:5733327855">(573) 332-7855</a></div>
+    </div>
+  </div>
+</div>
+<script>
+const A={};let step=1;
+const IND={services:{name:'Professional Services',mult:[4,6]},medical:{name:'Medical / Healthcare',mult:[5,8]},construction:{name:'Construction / Trades',mult:[3,5]},retail:{name:'Retail / Food & Bev',mult:[2.5,4]},manufacturing:{name:'Manufacturing / Dist.',mult:[4,7]},other:{name:'Your Industry',mult:[3,6]}};
+const REV_MID={'under500':250000,'500k-1m':750000,'1m-2m':1500000,'2m-5m':3000000,'5m-10m':7500000,'over10m':15000000};
+const REV_LBL={'under500':'Under $500K','500k-1m':'$500K-$1M','1m-2m':'$1M-$2M','2m-5m':'$2M-$5M','5m-10m':'$5M-$10M','over10m':'Over $10M'};
+const MARGIN={high:0.32,mid:0.22,low:0.10,unsure:0.18};
+function fmt(n){if(n>=1000000)return'$'+(n/1000000).toFixed(1).replace(/\.0$/,'')+' M';if(n>=1000)return'$'+Math.round(n/1000)+'K';return'$'+n.toLocaleString()}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('startBtn').addEventListener('click',function(){document.getElementById('progWrap').classList.add('show');setProgress(1);showScreen('screen-form')});
+function setProgress(n){document.getElementById('progFill').style.width=((n-1)/5*100)+'%';for(let i=1;i<=5;i++)document.getElementById('ps'+i).classList.toggle('active',i<=n)}
+function pick(el){const f=el.dataset.field;document.querySelectorAll('[data-field="'+f+'"]').forEach(c=>c.classList.remove('picked'));el.classList.add('picked');A[f]=el.dataset.value;const e=document.getElementById('err-'+step);if(e)e.classList.remove('show')}
+function goNext(from){const fm={1:'industry',2:'revenue',3:'profit',4:'timeline'};if(fm[from]&&!A[fm[from]]){document.getElementById('err-'+from).classList.add('show');return}step=from+1;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById('step-'+step).classList.add('active');setProgress(step);window.scrollTo({top:0,behavior:'smooth'})}
+function goBack(from){step=from-1;document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById('step-'+step).classList.add('active');setProgress(step);window.scrollTo({top:0,behavior:'smooth'})}
+function submitForm(){const fn=document.getElementById('f-fn').value.trim();const em=document.getElementById('f-em').value.trim();if(!fn||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){document.getElementById('err-5').classList.add('show');return}A.fname=fn;A.lname=document.getElementById('f-ln').value.trim();A.email=em;A.biz=document.getElementById('f-bz').value.trim();document.getElementById('progWrap').classList.remove('show');showScreen('screen-calc');runCalc()}
+function runCalc(){['ci1','ci2','ci3','ci4'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('done'),600+i*700));setTimeout(()=>{buildResults();showScreen('screen-results')},3800)}
+function buildResults(){
+  const ind=IND[A.industry]||IND.other;const rev=REV_MID[A.revenue]||1000000;const margin=MARGIN[A.profit]||0.20;const ebitda=rev*margin;const[mL,mH]=ind.mult;
+  const vLow=ebitda*mL*0.85,vMid=ebitda*((mL+mH)/2),vHigh=ebitda*mH*1.15;
+  document.getElementById('r-name').textContent=A.fname+(A.lname?' '+A.lname:'');
+  document.getElementById('r-biz').textContent=A.biz||ind.name;
+  document.getElementById('r-val').textContent=fmt(ebitda*mL)+' - '+fmt(ebitda*mH);
+  document.getElementById('r-range').textContent=fmt(vLow)+' - '+fmt(vHigh);
+  const RM={'1-3':{l:'Urgent',c:'bad',d:"You're close to exit with limited time to prepare - acting now is critical."},'3-7':{l:'Developing',c:'warn',d:'Good runway to build value and readiness before your window opens.'},'7-15':{l:'Early Stage',c:'warn',d:'You have time - use it to significantly increase your exit value.'},'notthinking':{l:'Not Started',c:'bad',d:'Knowing your number now puts you in control, even if exit is far off.'}};
+  const rdy=RM[A.timeline]||RM['notthinking'];document.getElementById('scc-ready').className='sc-card '+rdy.c;document.getElementById('r-ready').textContent=rdy.l;document.getElementById('r-ready-d').textContent=rdy.d;
+  const PM={high:{l:'Lower Risk',c:'good',d:'Strong margins reduce buyer risk and support a higher multiple.'},mid:{l:'Moderate Risk',c:'warn',d:'Some risk factors present - room to improve before exit.'},low:{l:'Higher Risk',c:'bad',d:'Thin margins increase perceived risk and compress your valuation.'},unsure:{l:'Unknown Risk',c:'bad',d:'Not knowing your profitability is itself a red flag for buyers.'}};
+  const rsk=PM[A.profit]||PM['unsure'];document.getElementById('scc-risk').className='sc-card '+rsk.c;document.getElementById('r-risk').textContent=rsk.l;document.getElementById('r-risk-d').textContent=rsk.d;
+  document.getElementById('r-mult').textContent=mL+'-'+mH+'x EBITDA';document.getElementById('r-mult-d').textContent='Benchmark for '+ind.name+' at '+(REV_LBL[A.revenue]||'your revenue')+'.';
+  const ins=[{icon:'💼',text:'<strong>Your estimated value: '+fmt(ebitda*mL)+' - '+fmt(ebitda*mH)+'</strong> - Based on '+ind.name+' benchmarks at '+(REV_LBL[A.revenue]||'your revenue level')+'. Your actual number depends on your specific financials and risk profile.'}];
+  if(A.profit==='unsure')ins.push({icon:'⚠️',text:'<strong>Not knowing your margins is costing you.</strong> Buyers evaluate on earnings, not revenue. Without clean financials you cannot know - or defend - your value. Getting organized is the #1 fix before any exit conversation.'});
+  else if(A.profit==='low')ins.push({icon:'📉',text:'<strong>Thin margins are compressing your valuation.</strong> At under 15%, buyers apply a risk discount. Every dollar of margin improvement can add <strong>'+fmt(mH)+'</strong> in enterprise value - operational improvements now pay outsized dividends at exit.'});
+  else ins.push({icon:'📈',text:'<strong>Strong margins are your biggest asset.</strong> The key now is proving those earnings are consistent and transferable to a new owner - that pushes you to the top of the '+mL+'-'+mH+'x range.'});
+  const TL={'1-3':{icon:'🚨',text:"<strong>With a 1-3 year horizon, you're in the preparation window right now.</strong> Most exits take 12-18 months to execute. Without a plan today you risk a rushed sale - typically 20-40% lower proceeds than a prepared exit."},'3-7':{icon:'⏳',text:'<strong>A 3-7 year runway is the sweet spot for exit planning.</strong> Enough time to meaningfully increase value - reducing owner dependency, diversifying customers, building SOPs - while keeping a clear finish line in sight.'},'7-15':{icon:'🌱',text:'<strong>The earlier you start, the more valuable your business becomes.</strong> Owners who begin planning 10+ years out routinely sell for 2-3x more than those who wait. Knowing your number now means smarter decisions every year.'},'notthinking':{icon:'🌱',text:"<strong>You don't have to be planning an exit to benefit from this.</strong> Understanding your value helps you make smarter decisions, attract better people, and build what could become your largest financial asset."}};
+  ins.push(TL[A.timeline]||TL['notthinking']);
+  ins.push({icon:'🔒',text:'<strong>Your '+fmt(vMid)+' in equity may have no protection right now.</strong> Without a buy-sell agreement and key person insurance, a death, disability, or dispute could wipe out the value you have spent years building - the most overlooked risk for business owners.'});
+  document.getElementById('r-insights').innerHTML=ins.map(i=>'<div class="insight"><span class="i-icon">'+i.icon+'</span>'+i.text+'</div>').join('');
+}
+</script>
+</body>
+</html>
