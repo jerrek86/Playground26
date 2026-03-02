@@ -116,6 +116,11 @@ body{font-family:'Open Sans',sans-serif;background:var(--off-white);color:var(--
 .sc-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-family:'Montserrat',sans-serif}
 .sc-val{font-family:'Montserrat',sans-serif;font-size:24px;font-weight:700;color:var(--charcoal);margin-bottom:6px}
 .sc-desc{font-size:14px;color:var(--muted);line-height:1.55}
+.inputs-row{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px;margin-bottom:24px;padding:18px 20px;background:var(--white);border:1px solid var(--border);border-radius:4px}
+.inputs-hdr{width:100%;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Montserrat',sans-serif;margin-bottom:4px}
+.inp-pill{display:inline-flex;flex-direction:column;background:var(--off-white);border:1px solid var(--border);border-radius:3px;padding:8px 14px;min-width:120px}
+.inp-pill-lbl{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-family:'Montserrat',sans-serif;margin-bottom:3px}
+.inp-pill-val{font-size:14px;font-weight:700;color:var(--charcoal);font-family:'Montserrat',sans-serif}
 .sec-hd{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:var(--charcoal);margin-bottom:14px;padding-bottom:12px;border-bottom:2px solid var(--blue-pale);display:flex;align-items:center;gap:10px}
 .insight-list{display:grid;gap:12px;margin-bottom:26px}
 .insight{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:0 4px 4px 0;padding:16px 18px 16px 48px;position:relative;font-size:15px;line-height:1.7;color:var(--text)}
@@ -283,6 +288,7 @@ body{font-family:'Open Sans',sans-serif;background:var(--off-white);color:var(--
       <div class="sc-card" id="scc-risk"><div class="sc-lbl">Value Risk</div><div class="sc-val" id="r-risk">&mdash;</div><div class="sc-desc" id="r-risk-d">&mdash;</div></div>
       <div class="sc-card blue"><div class="sc-lbl">Industry Multiple</div><div class="sc-val" id="r-mult">&mdash;</div><div class="sc-desc" id="r-mult-d">&mdash;</div></div>
     </div>
+    <div id="r-inputs"></div>
     <div class="sec-hd">&#128203; What This Means for You</div>
     <div class="insight-list" id="r-insights"></div>
     <div class="next-box">
@@ -352,6 +358,8 @@ function buildResults(){
   ins.push(TL[A.timeline]||TL['notthinking']);
   ins.push({icon:'🔒',text:'<strong>Your '+fmt(vMid)+' in equity may have no protection right now.</strong> Without a buy-sell agreement and key person insurance, a death, disability, or dispute could wipe out the value you have spent years building - the most overlooked risk for business owners.'});
   document.getElementById('r-insights').innerHTML=ins.map(i=>'<div class="insight"><span class="i-icon">'+i.icon+'</span>'+i.text+'</div>').join('');
+  const inputPills=[{l:'Industry',v:IND_LBL[A.industry]||'—'},{l:'Annual Revenue',v:REV_LBL[A.revenue]||'—'},{l:'Profitability',v:PROF_LBL[A.profit]||'—'},{l:'Exit Timeline',v:TIME_LBL[A.timeline]||'—'}];
+  document.getElementById('r-inputs').innerHTML='<div class="inputs-row"><div class="inputs-hdr">Based on your answers</div>'+inputPills.map(p=>'<div class="inp-pill"><span class="inp-pill-lbl">'+p.l+'</span><span class="inp-pill-val">'+p.v+'</span></div>').join('')+'</div>';
 }
 </script>
 </body>
